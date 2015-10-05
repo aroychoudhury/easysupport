@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="maven-antrun-" default="main"  >
-<target name="main" if="maven.automate.deploy">
-  <echo message="Initiating Build automation"/>
-  <ant antfile="build-automate.xml"/>
-</target>
-</project>
