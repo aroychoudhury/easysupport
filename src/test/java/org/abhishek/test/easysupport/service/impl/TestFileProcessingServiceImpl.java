@@ -7,7 +7,8 @@ import java.text.ParseException;
 
 import org.abhishek.easysupport.dto.rest.RequestWrapper;
 import org.abhishek.easysupport.dto.rest.ResponseWrapper;
-import org.abhishek.easysupport.service.impl.FileProcessingServiceImpl;
+import org.abhishek.easysupport.service.LogFileProcessingService;
+import org.abhishek.easysupport.service.impl.LogFileProcessingServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ public class TestFileProcessingServiceImpl {
 
     /**
      * Test method for
-     * {@link org.abhishek.easysupport.service.impl.FileProcessingServiceImpl#preProcess(org.abhishek.easysupport.dto.rest.RequestWrapper)}
+     * {@link org.abhishek.easysupport.service.impl.LogFileProcessingServiceImpl#preProcess(org.abhishek.easysupport.dto.rest.RequestWrapper)}
      * .
      * 
      * @throws ParseException
@@ -44,13 +45,13 @@ public class TestFileProcessingServiceImpl {
         requestWrapper.setToLineNumber(11);
         requestWrapper.setPermission("<FIRST>1</FIRST><SECOND>3</SECOND><THIRD>9</THIRD>");
 
-        FileProcessingServiceImpl service = new FileProcessingServiceImpl();
+        LogFileProcessingService service = new LogFileProcessingServiceImpl();
         service.preProcess(requestWrapper);
     }
 
     /**
      * Test method for
-     * {@link org.abhishek.easysupport.service.impl.FileProcessingServiceImpl#process(org.abhishek.easysupport.dto.rest.RequestWrapper)}
+     * {@link org.abhishek.easysupport.service.impl.LogFileProcessingServiceImpl#process(org.abhishek.easysupport.dto.rest.RequestWrapper)}
      * .
      * @throws ParseException 
      */
@@ -64,7 +65,7 @@ public class TestFileProcessingServiceImpl {
         requestWrapper.setToLineNumber(21);
         requestWrapper.setPermission("<FIRST>1</FIRST><SECOND>6</SECOND><THIRD>9</THIRD>");
 
-        FileProcessingServiceImpl service = new FileProcessingServiceImpl();
+        LogFileProcessingService service = new LogFileProcessingServiceImpl();
         ResponseWrapper responseWrapper = service.process(requestWrapper);
         if (null != responseWrapper.getContent()) {
             String[] contents = responseWrapper.getContent();

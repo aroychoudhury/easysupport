@@ -1,0 +1,87 @@
+<project name="easysupport" default="copy-war" basedir=".">
+	<description>Ant Utility</description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src" />
+	<property name="build" location="target" />
+
+	<!-- ******************************************************* -->
+	<!-- ************ TOMCAT CONFIGURATION GOES BELOW ********** -->
+	<!-- ******************************************************* -->
+	<property name="tomcat.home" value="/home/abhishek/InstalledApps/apache-tomcat-7.0.62" />
+	<!-- ******************************************************* -->
+	<!-- *********** TOMCAT CONFIGURATION GOES ABOVE *********** -->
+	<!-- ******************************************************* -->
+
+	<target name="copy-war" description="Copy the generated WAR to Tomcat" depends="check-war" if="war.exists">
+		<echo message="${ant.project.name}.war verifed to exist at: ${build}" />
+		<copy file="${build}\${ant.project.name}.war" todir="${tomcat.home}\webapps" />
+	</target>
+
+	<target name="check-war" description="Checks if WAR exists at the configured location" depends="clean" if="tomcat.exists">
+		<available file="${build}\${ant.project.name}.war" property="war.exists" />
+	</target>
+
+	<target name="clean" description="Clean Up Tomcat Directory" depends="print-version" if="tomcat.exists">
+		<echo message="Clean initiated for: ${ant.project.name}" />
+
+		<!-- Delete the Deployed versions -->
+		<delete dir="${tomcat.home}\webapps\${ant.project.name}" />
+		<delete file="${tomcat.home}\webapps\${ant.project.name}.war" />
+	</target>
+
+	<target name="print-version" description="Prints the Ant Java Versions" depends="tomcat-stop" if="tomcat.exists">
+		<echo message="Java/JVM version: ${ant.java.version}" />
+		<echo message="Java/JVM detail: ${java.version}" />
+	</target>
+
+	<target name="check-tomcat" description="Checks if Tomcat exists at the configured location">
+		<available file="${tomcat.home}\conf\server.xml" property="tomcat.exists" />
+	</target>
+
+	<target name="tomcat-stop" description="Stops Tomcat" depends="check-tomcat" if="tomcat.exists">
+		<echo message="Tomcat install verification has been verified at: ${tomcat.home}" />
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true" spawn="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+			<arg line="stop"/>
+		</java>
+		<echo message="Tomcat stopped in background"/>
+	</target>
+
+	<target name="tomcat-stop-foreground" description="Stops Tomcat without doing anything else">
+		<echo message="Tomcat install verification has been verified at: ${tomcat.home}" />
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+			<arg line="stop"/>
+		</java>
+		<echo message="Tomcat stopped in background"/>
+	</target>
+
+	<target name="tomcat-start" description="Starts Tomcat" depends="copy-war" if="war.exists">
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true" spawn="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+			<!--If you are getting any OutOfMemoryError, remove the comments 
+		            and enable jvm argument of the following line-->
+			<!--jvmarg value="-XX:MaxPermSize=256m"/-->
+			<jvmarg value="-Xdebug"/>
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"/>
+		</java>
+		<echo message="Tomcat started in background"/>
+	</target>
+
+	<target name="tomcat-start-foreground" description="Starts Tomcat without doing anything else">
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+			<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+			<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+			<!--If you are getting any OutOfMemoryError, remove the comments 
+			            and enable jvm argument of the following line-->
+			<!--jvmarg value="-XX:MaxPermSize=256m"/-->
+			<jvmarg value="-Xdebug"/>
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"/>
+		</java>
+		<echo message="Tomcat started in background"/>
+	</target>
+</project>

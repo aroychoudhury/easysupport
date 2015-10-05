@@ -18,6 +18,7 @@ public class FileWrapperConverter implements Converter<FileWrapper, File> {
         convFile.setExtn(FileUtils.extractFileExtension(fileName));
         convFile.setPath(file.getAbsolutePath());
         convFile.setModifiedStr(DateUtils.format(file.lastModified()));
+        convFile.setPreProcessed(FileUtils.fileExists(FileUtils.serilizedFileName(fileName, convFile.getModifiedStr())));
         if (file.isDirectory()) {
             convFile.setType(FileTypes.DIRECTORY);
         } else if (file.isFile()) {

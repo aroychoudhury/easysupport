@@ -14,12 +14,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This class extends the basic Log Processing capabilities and customizes it
+ * for ETMS log structure.
+ * 
+ * It is also designed tol be extendable and hence could be extended to further
+ * customize the processing.
+ * 
  * @author abhishek
  * @since 1.0
  */
 public class ProcessETMSLogFileContent extends ProcessLogFileContent {
-    private static final Logger       logger  = LoggerFactory.getLogger(ProcessETMSLogFileContent.class);
-    protected AbstractParser<Boolean> parser  = null;
+    private static final Logger       logger         = LoggerFactory.getLogger(ProcessETMSLogFileContent.class);
+
+    /* Class variables */
+    protected String                  defaultDisplay = "";
+    protected AbstractParser<Boolean> parser         = null;
 
     /**
      * @param metadata
@@ -28,11 +37,21 @@ public class ProcessETMSLogFileContent extends ProcessLogFileContent {
      * @author abhishek
      * @since 1.0
      */
-    public ProcessETMSLogFileContent(FileMetadata metadata, String match, int startLine, int endLine) {
+    public ProcessETMSLogFileContent(FileMetadata metadata,
+        String match,
+        int startLine,
+        int endLine) {
         super(metadata, startLine, endLine);
 
         this.parser = new CharacterBasedParser<Boolean>("[<FIRST", "THIRD>]");
         this.parser.setParseHelper(new VerifyMatchHelper(match));
+
+        StringBuilder tmpBuilder = new StringBuilder("");
+        for (int idx = 0; idx < metadata.getMaxLineLength(); idx++) {
+            tmpBuilder.append('*');
+        }
+        tmpBuilder.append('\n');
+        this.defaultDisplay = tmpBuilder.toString();
     }
 
     /**
@@ -43,11 +62,13 @@ public class ProcessETMSLogFileContent extends ProcessLogFileContent {
     @Override
     public boolean execute(char[] lineChars) {
         try {
-            ParseResult<Boolean> result = this.parser.parseFragment(lineChars, Parser.DEFAULT);
+            ParseResult<Boolean> result = this.parser.parseFragment(
+                lineChars,
+                Parser.DEFAULT);
             if (result.getResult().booleanValue()) {
                 this.appendContent(lineChars);
             } else {
-                this.appendContent("***********************************************************************\n");
+                this.appendContent(this.defaultDisplay);
             }
         } catch (Exception e) {
             logger.error(
@@ -57,15 +78,15 @@ public class ProcessETMSLogFileContent extends ProcessLogFileContent {
             if (!this.parser.IsContinueOnExc()) {
                 this.resetContent();
                 this.appendContent(ExceptionUtils.getStackTrace(e));
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
      * @author abhishek
-     * @since  1.0
+     * @since 1.0
      * @see org.abhishek.fileanalytics.process.AbstractProcessor#initialize()
      */
     @Override

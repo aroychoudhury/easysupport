@@ -4,15 +4,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.abhishek.easysupport.dto.rest.FileWrapper;
+import org.abhishek.easysupport.dto.rest.Restful;
 import org.abhishek.fileanalytics.convert.Converter;
 
-public class FileWrappersArrayConverter implements Converter<List<FileWrapper>, File[]> {
+public class FileWrappersArrayConverter implements Converter<List<Restful>, File[]> {
 
 	@Override
-	public List<FileWrapper> convert(File[] files) {
+	public List<Restful> convert(File[] files) {
 	    FileWrapperConverter singularConverter = new FileWrapperConverter();
-		List<FileWrapper> convFiles = new ArrayList<FileWrapper>(files.length);
+		List<Restful> convFiles = new ArrayList<Restful>(files.length);
 
 		for (File file : files) {
 			if (file.isHidden()) {

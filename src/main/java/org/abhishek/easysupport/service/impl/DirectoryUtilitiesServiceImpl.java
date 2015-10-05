@@ -2,36 +2,48 @@ package org.abhishek.easysupport.service.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.abhishek.easysupport.convert.impl.FileWrappersArrayConverter;
-import org.abhishek.easysupport.dto.rest.FileWrapper;
+import org.abhishek.easysupport.dto.rest.Restful;
 import org.abhishek.easysupport.service.DirectoryUtilitiesService;
 import org.abhishek.fileanalytics.convert.impl.BasicFilesArrayConverter;
 import org.abhishek.fileanalytics.utils.FileUtils;
+import org.springframework.stereotype.Service;
 
+/**
+ * TODO
+ * 
+ * @author abhishek
+ * @since 1.0
+ */
+@Transactional
+@Service("DirectoryServices")
 public class DirectoryUtilitiesServiceImpl implements DirectoryUtilitiesService {
     /*
-     * @see
-     * org.abhishek.easysupport.service.FileUtilitiesService#getFiles(java
+     * @see org.abhishek.easysupport.service.FileUtilitiesService#getFiles(java
      * .lang.String)
      */
     @Override
-    public List<FileWrapper> getContents(String directoryPath) {
-        return FileUtils.listContents(directoryPath, new FileWrappersArrayConverter());
+    public List<Restful> getContents(String directoryPath) {
+        return FileUtils.listContents(
+            directoryPath,
+            new FileWrappersArrayConverter());
     }
 
     /*
-     * @see
-     * org.abhishek.easysupport.service.FileUtilitiesService#getFilesSimple
+     * @see org.abhishek.easysupport.service.FileUtilitiesService#getFilesSimple
      * (java.lang.String)
      */
     @Override
     public List<String> getContentsBasic(String directoryPath) {
-        return FileUtils.listContents(directoryPath, new BasicFilesArrayConverter());
+        return FileUtils.listContents(
+            directoryPath,
+            new BasicFilesArrayConverter());
     }
 
     /*
-     * @see
-     * org.abhishek.easysupport.service.FileUtilitiesService#clearDirectory
+     * @see org.abhishek.easysupport.service.FileUtilitiesService#clearDirectory
      * (java.lang.String)
      */
     @Override

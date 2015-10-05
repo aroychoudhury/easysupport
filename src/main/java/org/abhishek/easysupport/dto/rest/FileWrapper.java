@@ -2,12 +2,20 @@ package org.abhishek.easysupport.dto.rest;
 
 import org.abhishek.fileanalytics.constants.FileTypes;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_EMPTY)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class FileWrapper implements Restful {
-    private String    path        = null;
-    private String    name        = null;
-    private String    extn        = null;
-    private String    modifiedStr = null;
-    private FileTypes type        = null;
+    private String    path         = null;
+    private String    name         = null;
+    private String    extn         = null;
+    private String    modifiedStr  = null;
+    private boolean   preProcessed = false;
+    private FileTypes type         = null;
 
     /**
      * @return the path
@@ -19,7 +27,8 @@ public class FileWrapper implements Restful {
     }
 
     /**
-     * @param path the path to set
+     * @param path
+     *            the path to set
      * @since 1.0
      * @see String
      */
@@ -56,7 +65,8 @@ public class FileWrapper implements Restful {
     }
 
     /**
-     * @param extn the extn to set
+     * @param extn
+     *            the extn to set
      * @since 1.0
      * @see String
      */
@@ -81,6 +91,24 @@ public class FileWrapper implements Restful {
      */
     public void setModifiedStr(String modifiedStr) {
         this.modifiedStr = modifiedStr;
+    }
+
+    /**
+     * @return the preProcessed
+     * @since 1.0
+     * @see boolean
+     */
+    public boolean isPreProcessed() {
+        return preProcessed;
+    }
+
+    /**
+     * @param preProcessed the preProcessed to set
+     * @since 1.0
+     * @see boolean
+     */
+    public void setPreProcessed(boolean preProcessed) {
+        this.preProcessed = preProcessed;
     }
 
     /**
