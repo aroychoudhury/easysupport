@@ -14,8 +14,8 @@ import org.abhishek.easysupport.dto.rest.ResponseWrapper;
  */
 public interface LogFileProcessingService {
 
-    void preProcess(RequestWrapper reqWrapper) throws ParseException;
+    void preProcess(RequestWrapper request) throws ParseException;
 
-    ResponseWrapper process(RequestWrapper reqWrapper) throws ParseException;
+    ResponseWrapper process(RequestWrapper request) throws ParseException;
 
 }

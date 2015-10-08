@@ -3,8 +3,6 @@
  */
 package org.abhishek.easysupport.service.impl;
 
-import javax.transaction.Transactional;
-
 import org.abhishek.easysupport.convert.impl.FileWrapperConverter;
 import org.abhishek.easysupport.dto.rest.FileWrapper;
 import org.abhishek.easysupport.service.FileUtilitiesService;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
  * @author abhishek
  * @since 1.0
  */
-@Transactional
 @Service("FileServices")
 public class FileUtilitiesServiceImpl implements FileUtilitiesService {
 

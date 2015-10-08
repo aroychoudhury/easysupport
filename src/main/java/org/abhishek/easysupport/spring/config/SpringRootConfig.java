@@ -2,9 +2,11 @@
 
 package org.abhishek.easysupport.spring.config;
 
+import org.abhishek.fileanalytics.orchestrate.Orchestrater;
+import org.abhishek.fileanalytics.orchestrate.impl.BasicLogFileOrchestrator;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Initializes the Spring Root context.
@@ -13,12 +15,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @since 1.0
  */
 @Configuration
-@EnableTransactionManagement
-@ComponentScan({
-    "org.abhishek.easysupport"
+@ComponentScan(basePackages = {
+    "org.abhishek.easysupport.service"
 })
 public class SpringRootConfig {
     public SpringRootConfig() {
         System.out.println("Spring Root");
+    }
+
+    @Bean(name = "orchestrater")
+    public Orchestrater orchestrater() {
+        return new BasicLogFileOrchestrator();
     }
 }

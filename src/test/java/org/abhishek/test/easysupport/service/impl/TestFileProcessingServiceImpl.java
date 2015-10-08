@@ -8,28 +8,30 @@ import java.text.ParseException;
 import org.abhishek.easysupport.dto.rest.RequestWrapper;
 import org.abhishek.easysupport.dto.rest.ResponseWrapper;
 import org.abhishek.easysupport.service.LogFileProcessingService;
-import org.abhishek.easysupport.service.impl.LogFileProcessingServiceImpl;
-import org.junit.Before;
+import org.abhishek.easysupport.spring.config.SpringRootConfig;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author abhishek
  * @since 1.0
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {
+    SpringRootConfig.class
+})
 public class TestFileProcessingServiceImpl {
-
-    /**
-     * @throws java.lang.Exception
-     * @author abhishek
-     * @since 1.0
-     */
-    @Before
-    public void setUp() throws Exception {
-    }
+    @Autowired
+    @Qualifier("LogProcessServices")
+    private LogFileProcessingService logProcessServices = null;
 
     /**
      * Test method for
-     * {@link org.abhishek.easysupport.service.impl.LogFileProcessingServiceImpl#preProcess(org.abhishek.easysupport.dto.rest.RequestWrapper)}
+     * {@link org.abhishek.easysupport.service.impl.LogFileProcessingService#preProcess(org.abhishek.easysupport.dto.rest.RequestWrapper)}
      * .
      * 
      * @throws ParseException
@@ -37,38 +39,37 @@ public class TestFileProcessingServiceImpl {
     @Test
     public void testPreProcess() throws ParseException {
         System.out.println((new File(".")).getAbsolutePath());
-        RequestWrapper requestWrapper = new RequestWrapper();
-        requestWrapper.setFileName("etmsapp.1.log");
-        requestWrapper.setFilePath("./src/test/resources");
-        requestWrapper.setUserId("ABHISHEK");
-        requestWrapper.setFromLineNumber(1);
-        requestWrapper.setToLineNumber(11);
-        requestWrapper.setPermission("<FIRST>1</FIRST><SECOND>3</SECOND><THIRD>9</THIRD>");
+        RequestWrapper request = new RequestWrapper();
+        request.setFileName("etmsapp.1.log");
+        request.setFilePath("./src/test/resources");
+        request.setUserId("ABHISHEK");
+        request.setFromLineNumber(1);
+        request.setToLineNumber(11);
+        request.setPermission("<FIRST>1</FIRST><SECOND>3</SECOND><THIRD>9</THIRD>");
 
-        LogFileProcessingService service = new LogFileProcessingServiceImpl();
-        service.preProcess(requestWrapper);
+        logProcessServices.preProcess(request);
     }
 
     /**
      * Test method for
-     * {@link org.abhishek.easysupport.service.impl.LogFileProcessingServiceImpl#process(org.abhishek.easysupport.dto.rest.RequestWrapper)}
+     * {@link org.abhishek.easysupport.service.impl.LogFileProcessingService#process(org.abhishek.easysupport.dto.rest.RequestWrapper)}
      * .
-     * @throws ParseException 
+     * 
+     * @throws ParseException
      */
     @Test
     public void testProcess() throws ParseException {
-        RequestWrapper requestWrapper = new RequestWrapper();
-        requestWrapper.setFileName("etmsapp.1.log");
-        requestWrapper.setFilePath("./src/test/resources");
-        requestWrapper.setUserId("ABHISHEK");
-        requestWrapper.setFromLineNumber(2);
-        requestWrapper.setToLineNumber(21);
-        requestWrapper.setPermission("<FIRST>1</FIRST><SECOND>6</SECOND><THIRD>9</THIRD>");
+        RequestWrapper request = new RequestWrapper();
+        request.setFileName("etmsapp.1.log");
+        request.setFilePath("./src/test/resources");
+        request.setUserId("ABHISHEK");
+        request.setFromLineNumber(2);
+        request.setToLineNumber(21);
+        request.setPermission("<FIRST>1</FIRST><SECOND>6</SECOND><THIRD>9</THIRD>");
 
-        LogFileProcessingService service = new LogFileProcessingServiceImpl();
-        ResponseWrapper responseWrapper = service.process(requestWrapper);
-        if (null != responseWrapper.getContent()) {
-            String[] contents = responseWrapper.getContent();
+        ResponseWrapper response = logProcessServices.process(request);
+        if (null != response.getContent()) {
+            String[] contents = response.getContent();
             for (String content : contents) {
                 System.out.print(content);
             }

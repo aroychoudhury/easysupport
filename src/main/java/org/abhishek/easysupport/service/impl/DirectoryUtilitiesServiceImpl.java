@@ -2,8 +2,6 @@ package org.abhishek.easysupport.service.impl;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.abhishek.easysupport.convert.impl.FileWrappersArrayConverter;
 import org.abhishek.easysupport.dto.rest.Restful;
 import org.abhishek.easysupport.service.DirectoryUtilitiesService;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
  * @author abhishek
  * @since 1.0
  */
-@Transactional
 @Service("DirectoryServices")
 public class DirectoryUtilitiesServiceImpl implements DirectoryUtilitiesService {
     /*
